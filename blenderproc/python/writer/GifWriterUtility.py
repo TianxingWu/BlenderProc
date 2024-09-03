@@ -14,6 +14,7 @@ from blenderproc.python.utility.Utility import Utility
 def write_gif_animation(
         output_dir_path: str,
         output_data_dict: Dict[str, List[Union[np.ndarray, list, dict]]],
+        keys_to_use: List = None,
         append_to_existing_output: bool = False,
         frame_duration_in_ms: int = 50,
         reverse_animation: bool = False):
@@ -44,9 +45,11 @@ def write_gif_animation(
                            "of images specified by frame_start to frame_end.")
 
     # Sorts out keys which are just metadata and not plottable
-    keys_to_use = _GifWriterUtility.select_keys(output_data_dict)
+    if not keys_to_use:
+        keys_to_use = _GifWriterUtility.select_keys(output_data_dict)
 
     # Build temporary folders with .png collections
+    print(keys_to_use)
     to_animate = _GifWriterUtility.cache_png(keys_to_use, output_data_dict)
 
     # Write the cache .png files to .gif files and delete cache
