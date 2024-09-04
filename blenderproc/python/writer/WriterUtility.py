@@ -23,7 +23,7 @@ from blenderproc.python.camera import CameraUtility
 
 
 def write_hdf5(output_dir_path: str, output_data_dict: Dict[str, List[Union[np.ndarray, list, dict]]],
-               append_to_existing_output: bool = False, stereo_separate_keys: bool = False):
+               append_to_existing_output: bool = False, stereo_separate_keys: bool = False, verbose=True):
     """
     Saves the information provided inside of the output_data_dict into a .hdf5 container
 
@@ -69,7 +69,8 @@ def write_hdf5(output_dir_path: str, output_data_dict: Dict[str, List[Union[np.n
         hdf5_path = os.path.join(output_dir_path, str(frame + frame_offset) + ".hdf5")
         with h5py.File(hdf5_path, "w") as file:
             # Go through all the output types
-            print(f"Merging data for frame {frame} into {hdf5_path}")
+            if verbose:
+                print(f"Merging data for frame {frame} into {hdf5_path}")
 
             adjusted_frame = frame - bpy.context.scene.frame_start
             for key, data_block in output_data_dict.items():
